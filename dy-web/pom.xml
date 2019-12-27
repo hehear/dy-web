@@ -1,0 +1,132 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.dy</groupId>
+	<artifactId>dy-web</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<description>基础的restful应用</description>
+    <modules>
+        <module>../dy-u-report</module>
+    </modules>
+    <packaging>pom</packaging>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.dy</groupId>
+			<artifactId>dy-u-file</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dy</groupId>
+			<artifactId>dy-u-report</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+	</dependencies>
+
+
+	<build>
+		<finalName>gzdtl-boot-common</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+
+			<!--打包jar-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/*.properties</exclude>
+						<exclude>**/*.xml</exclude>
+					</excludes>
+					<archive>
+						<manifest>
+							<mainClass>com.sy.sprite.SpriteApplication</mainClass>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+						</manifest>
+						<manifestEntries>
+							<Class-Path>./</Class-Path>
+						</manifestEntries>
+					</archive>
+					<outputDirectory>${project.build.directory}</outputDirectory>
+				</configuration>
+			</plugin>
+
+			<!--打包依赖lib-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!--打包resource-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<resources>
+								<resource>
+									<directory>src/main/resources</directory>
+								</resource>
+							</resources>
+							<outputDirectory>${project.build.directory}/</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+<!--	<build>-->
+<!--		&lt;!&ndash; 可指定打包名称 ，否则使用默认规则：artifactId-version &ndash;&gt;-->
+<!--		&lt;!&ndash; <finalName>fee_compare</finalName> &ndash;&gt;-->
+
+<!--		<plugins>-->
+<!--			<plugin>-->
+<!--				<groupId>org.springframework.boot</groupId>-->
+<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--				<version>2.1.0.RELEASE</version>-->
+<!--				<configuration>-->
+
+<!--					<fork>true</fork>-->
+<!--					&lt;!&ndash;增加jvm参数 &ndash;&gt;-->
+<!--					<jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>-->
+
+<!--				</configuration>-->
+
+<!--			</plugin> -->
+
+<!--		</plugins>-->
+<!--	</build>-->
+</project>
