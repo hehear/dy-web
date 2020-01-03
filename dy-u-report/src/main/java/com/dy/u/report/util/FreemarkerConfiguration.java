@@ -60,6 +60,22 @@ public final class FreemarkerConfiguration {
     return htmlPath;
   }
 
+
+  /**
+   * 返回模板对应的html路径，要求唯一，所以使用了 {@link java.util.UUID#randomUUID()} 和
+   * {@link Random#Random(long)}
+   *
+   * @param
+   * @return
+   */
+  public static String getTempHtmlPath() {
+    // 产生精确的唯一的标识
+    String htmlPath = String.format("%s/temp/%s-%d-%d.html", templateDirectoryPath, "temp",
+            System.nanoTime(), random.nextLong());
+
+    return htmlPath;
+  }
+
   /**
    * 获取模板所在的目录
    * 

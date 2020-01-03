@@ -73,6 +73,33 @@ public class HtmlGenerator {
     return htmlPath;
   }
 
+ /***
+   * 根据html内容生成html文件，返回html文件的路径
+   *
+   * @param htmlContent
+   * @return
+   * @throws Exception
+   */
+  public static String generateHTML(String htmlContent)
+      throws Exception {
+
+    String htmlPath = FreemarkerConfiguration.getTempHtmlPath();
+
+    File outFile = new File(htmlPath);
+    FileOutputStream fos = new FileOutputStream(outFile);
+
+    // 字符编码设置好
+    Writer out = new BufferedWriter(new OutputStreamWriter(fos, "UTF-8"));
+
+    out.write(htmlContent);
+    out.flush();
+
+    fos.close();
+    out.close();
+
+    return htmlPath;
+  }
+
   /**
    * 生成通知单css文件
    * 

@@ -11,5 +11,14 @@ public class PdfQueryVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    //html内容
+    private String htmlContent;
 
+    public String getHtmlContent() {
+        return htmlContent;
+    }
+
+    public void setHtmlContent(String htmlContent) {
+        this.htmlContent = htmlContent;
+    }
 }

@@ -22,4 +22,10 @@ public interface IPdfGenService {
      * @throws Exception
      */
     public int genPdfFileByPdfTemplate(PdfQueryVO vo) throws Exception;
+
+    /**
+     * 根据html内容生成pdf
+     * @param vo
+     */
+    public String genPdfFileByHtmlContent(PdfQueryVO vo) throws Exception;
 }

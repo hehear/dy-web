@@ -42,9 +42,11 @@ public class ConcurrentPdfGenerator {
     // 添加字体
     ITextFontResolver fontResolver = renderer.getFontResolver();
     try {
+      //fontResolver.addFont("/Users/runningcoder/Desktop/pdf/font/simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+
       for (String fontPath : fontPathList){
 
-          if(fontPath.endsWith(".ttf")){
+          if(fontPath.endsWith(".ttf")||fontPath.endsWith(".ttc")){
 
             fontResolver.addFont(fontPath, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
           }
@@ -164,7 +166,7 @@ public class ConcurrentPdfGenerator {
    * @throws IOException
    * @throws DocumentException
    */
-  private static void generate(ITextRenderer renderer, String htmlPath, String outputPdfPath,
+  public static void generate(ITextRenderer renderer, String htmlPath, String outputPdfPath,
       List<String> fontPathList) throws Exception {
     if (fontPathList == null) {
       throw new Exception( "通知单字体未配置");

@@ -26,7 +26,7 @@ public class ReportUtil {
 
   private static final String FILE_SEPERATOR = "/";
 
-  private static final String fontDir = "/Users/runningcoder/Desktop/学习/pdf/font";
+  private static final String fontDir = "/Users/runningcoder/Desktop/pdf/font/";
 
   /**
    * 替换掉所有的连续空格，html解析的时候会把连续的空格字符合并为一个

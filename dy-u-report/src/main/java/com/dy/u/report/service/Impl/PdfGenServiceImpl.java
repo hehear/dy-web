@@ -1,8 +1,10 @@
 package com.dy.u.report.service.Impl;
 
+import com.dy.s.basic.util.FileUtil;
 import com.dy.u.report.model.PdfQueryVO;
 import com.dy.u.report.service.IPdfGenService;
 import com.dy.u.report.util.ConcurrentPdfGenerator;
+import com.dy.u.report.util.HtmlGenerator;
 import com.dy.u.report.util.ReportUtil;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Font;
@@ -36,7 +38,7 @@ public class PdfGenServiceImpl implements IPdfGenService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PdfGenServiceImpl.class);
 
-    private final static String pdfFilePath = "/Users/runningcoder/Desktop/学习/pdf";
+    private final static String pdfFilePath = "/Users/runningcoder/Desktop/pdf";
     private final static String ftlTemplateName = "gen_pdf_template";
     private final static String ftlTemplateCssName = "gen_pdf_css";
 
@@ -153,7 +155,7 @@ public class PdfGenServiceImpl implements IPdfGenService {
         PdfStamper stamper;
         try {
             //字体
-            BaseFont bf = BaseFont.createFont("/Users/runningcoder/Desktop/学习/pdf/font/STSong-Light.ttf" , BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont bf = BaseFont.createFont("/Users/runningcoder/Desktop/pdf/font/STSong-Light.ttf" , BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font FontChinese = new Font(bf, 5, Font.NORMAL);
             // 输出流
             out = new FileOutputStream(newPDFPath);
@@ -171,7 +173,7 @@ public class PdfGenServiceImpl implements IPdfGenService {
 
             //图片类的内容处理
             String key = "Test3";
-            String imgpath = "/Users/runningcoder/Desktop/学习/pdf/1.jpg";
+            String imgpath = "/Users/runningcoder/Desktop/pdf/1.jpg";
             int pageNo = form.getFieldPositions(key).get(0).page;
             Rectangle signRect = form.getFieldPositions(key).get(0).position;
             float x = signRect.getLeft();
@@ -199,7 +201,40 @@ public class PdfGenServiceImpl implements IPdfGenService {
 
         } catch (Exception e) {
             LOGGER.error("生成pdf出错！",e);
+            throw e;
         }
         return 1;
+    }
+
+    /**
+     * 根据html内容生成pdf
+     * @param vo
+     */
+    @Override
+    public String genPdfFileByHtmlContent(PdfQueryVO vo) throws Exception{
+
+        //字体
+        List<String> fontPathList = ReportUtil.getFontPathList();
+
+        ITextRenderer textRenderer = ConcurrentPdfGenerator.newTextRenderer();
+
+        String pdfPath = pdfFilePath+"/resume.pdf";
+
+        String htmlContent = vo.getHtmlContent();
+
+        //生成pdf前删除文件
+        FileUtil.delFile(pdfPath);
+
+        //生成html文件
+        String htmlPath = HtmlGenerator.generateHTML(htmlContent);
+
+        //htmlContent = ReportUtil.replaceToHtmlBlank(htmlContent);
+
+        ConcurrentPdfGenerator.generate(textRenderer,htmlPath,pdfPath,fontPathList);
+
+        //生成后删除
+        FileUtil.delFile(htmlPath);
+
+        return pdfPath;
     }
 }
