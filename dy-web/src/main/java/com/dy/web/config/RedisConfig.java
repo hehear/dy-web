@@ -1,4 +1,4 @@
-package com.dy;
+package com.dy.web.config;
 
 
 import org.springframework.cache.annotation.CachingConfigurerSupport;
