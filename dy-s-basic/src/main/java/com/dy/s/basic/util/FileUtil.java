@@ -2,12 +2,7 @@ package com.dy.s.basic.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -442,6 +437,33 @@ public class FileUtil {
 		}
 
 		return fileNameList;
+	}
+
+	/***
+	 * 根据markerdown内容生成md文件，返回md文件的路径
+	 *
+	 * @param htmlContent
+	 * @return
+	 * @throws Exception
+	 */
+	public static String generateMdFile(String mdContent)
+			throws Exception {
+
+		String mdPath = "/Users/runningcoder/git/dy-web/dy-web/target/template/temp/rusume.md";
+
+		File outFile = new File(mdPath);
+		FileOutputStream fos = new FileOutputStream(outFile);
+
+		// 字符编码设置好
+		Writer out = new BufferedWriter(new OutputStreamWriter(fos, "UTF-8"));
+
+		out.write(mdContent);
+		out.flush();
+
+		fos.close();
+		out.close();
+
+		return mdPath;
 	}
 
 }
