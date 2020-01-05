@@ -1,7 +1,10 @@
 package com.dy.u.report.util;
 
 import com.dy.s.basic.util.FileUtil;
+import com.dy.u.report.properties.ReportProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,13 +23,20 @@ import javax.servlet.http.HttpServletResponse;
  * @author dxy
  * @date 2019-12-04
  */
+@Component
 public class ReportUtil {
 	
   private ReportUtil(){}
 
   private static final String FILE_SEPERATOR = "/";
 
-  private static final String fontDir = "/Users/runningcoder/Desktop/pdf/font/";
+
+  private static ReportProperties reportProperties;
+
+  @Autowired
+  public void setReportProperties(ReportProperties reportProperties) {
+    ReportUtil.reportProperties = reportProperties;
+  }
 
   /**
    * 替换掉所有的连续空格，html解析的时候会把连续的空格字符合并为一个
@@ -98,7 +108,7 @@ public class ReportUtil {
 
     // 中文字体: 宋体 、黑体、 楷体 、隶书 、幼圆
     // 英文字体: Tohama/Arial/Times New Roman/
-    return FileUtil.getAllFileNames(fontDir);
+    return FileUtil.getAllFileNames(reportProperties.getFont());
   }
 
   /**

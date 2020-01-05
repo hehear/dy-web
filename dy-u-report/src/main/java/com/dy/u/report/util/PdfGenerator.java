@@ -25,8 +25,8 @@ public class PdfGenerator {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PdfGenerator.class);
 
-    //@Value("${report.font.path}")
-	private static String fontPath="/Users/runningcoder/Desktop/学习/pdf/font";
+    @Value("${report.font.path}")
+	private static String fontPath;
     
 	private static String staticFontPath;
     @PostConstruct

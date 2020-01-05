@@ -1,6 +1,9 @@
 package com.dy.s.basic.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,11 +16,20 @@ import java.util.List;
  * @date 2019-12-27
  * 
  */
+@Component
 public class FileUtil {
 	
 	private FileUtil(){}
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
+
+
+	private static String templatePath;
+
+	@Value("${report.pdf.path.template}")
+	public void setTemplatePath(String templatePath) {
+		FileUtil.templatePath = templatePath;
+	}
 
 	/**
 	 * 删除指定目录下的所有文件
@@ -449,8 +461,9 @@ public class FileUtil {
 	public static String generateMdFile(String mdContent)
 			throws Exception {
 
-		String mdPath = "/Users/runningcoder/git/dy-web/dy-web/target/template/temp/rusume.md";
+		//String mdPath = "/Users/runningcoder/git/dy-web/dy-web/target/template/temp/rusume.md";
 
+		String mdPath = templatePath+"temp/rusume.md";
 		File outFile = new File(mdPath);
 		FileOutputStream fos = new FileOutputStream(outFile);
 

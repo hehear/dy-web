@@ -1,9 +1,12 @@
 package com.dy.u.report.util;
 
+import com.dy.u.report.properties.ReportProperties;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,34 +18,32 @@ import java.util.Random;
  * @date 2019-12-04
  *
  */
+@Component
 public final class FreemarkerConfiguration {
   private static final Logger LOGGER = LoggerFactory.getLogger(FreemarkerConfiguration.class);
 
   private static Configuration config;
-  private static String templateDirectoryPath;
+
+  private static ReportProperties reportProperties;
+
+  @Autowired
+  public void setReportProperties(ReportProperties reportProperties) {
+    this.reportProperties = reportProperties;
+  }
+//  @Value("${report.template.path}")
+//  private static String templateDirectoryPath;
+
   private static Random random = new Random(10086);
 
   /**
    * Static initialization.
-   * 
+   *
    * Initialize the configuration of Freemarker.
    */
   static {
-    config = new Configuration();
 
 
-    templateDirectoryPath = "/Users/runningcoder/git/dy-web/dy-web/target/template/";
 
-
-    File file = new File(templateDirectoryPath);
-    try {
-      config.setDirectoryForTemplateLoading(file);
-    } catch (IOException e) {
-
-      LOGGER.error(e.getMessage());
-    }
-    config.setObjectWrapper(new DefaultObjectWrapper());
-    config.setDefaultEncoding("UTF-8");
   }
 
   /**
@@ -54,7 +55,7 @@ public final class FreemarkerConfiguration {
    */
   public static String getTemplateHtmlPath(String templateName) {
     // 产生精确的唯一的标识
-    String htmlPath = String.format("%s/temp/%s-%d-%d.html", templateDirectoryPath, templateName,
+    String htmlPath = String.format("%s/temp/%s-%d-%d.html", reportProperties.getTemplate(), templateName,
         System.nanoTime(), random.nextLong());
 
     return htmlPath;
@@ -70,7 +71,7 @@ public final class FreemarkerConfiguration {
    */
   public static String getTempHtmlPath() {
     // 产生精确的唯一的标识
-    String htmlPath = String.format("%s/temp/%s-%d-%d.html", templateDirectoryPath, "temp",
+    String htmlPath = String.format("%s/temp/%s-%d-%d.html", reportProperties.getTemplate(), "temp",
             System.nanoTime(), random.nextLong());
 
     return htmlPath;
@@ -84,10 +85,24 @@ public final class FreemarkerConfiguration {
   public static String getTemplateDir() {
 
     // 产生唯一的标识
-    return templateDirectoryPath + "/temp/";
+    return reportProperties.getTemplate() + "/temp/";
   }
 
   public static Configuration getConfiguration() {
+
+    config = new Configuration();
+
+    //templateDirectoryPath = "/Users/runningcoder/git/dy-web/dy-web/target/template/";
+
+    File file = new File(reportProperties.getTemplate());
+    try {
+      config.setDirectoryForTemplateLoading(file);
+    } catch (IOException e) {
+
+      LOGGER.error(e.getMessage());
+    }
+    config.setObjectWrapper(new DefaultObjectWrapper());
+    config.setDefaultEncoding("UTF-8");
     return config;
   }
 

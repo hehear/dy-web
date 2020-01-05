@@ -2,6 +2,7 @@ package com.dy.u.report.service.Impl;
 
 import com.dy.s.basic.util.FileUtil;
 import com.dy.u.report.model.PdfQueryVO;
+import com.dy.u.report.properties.ReportProperties;
 import com.dy.u.report.service.IPdfGenService;
 import com.dy.u.report.util.ConcurrentPdfGenerator;
 import com.dy.u.report.util.HtmlGenerator;
@@ -13,6 +14,7 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
@@ -38,7 +40,22 @@ public class PdfGenServiceImpl implements IPdfGenService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PdfGenServiceImpl.class);
 
-    private final static String pdfFilePath = "/Users/runningcoder/Desktop/pdf";
+//    @Value("${report.pdf.path}")
+//    private static String pdfFilePath;
+//
+//    @Value("${report.template.path}")
+//    private static String pdfTemplatePath;
+//
+//    @Value("${report.font.path}")
+//    private static String fontPath;
+
+    private static ReportProperties reportProperties;
+
+    @Autowired
+    public void setReportProperties(ReportProperties reportProperties) {
+        this.reportProperties = reportProperties;
+    }
+
     private final static String ftlTemplateName = "gen_pdf_template";
     private final static String ftlTemplateCssName = "gen_pdf_css";
 
@@ -103,7 +120,7 @@ public class PdfGenServiceImpl implements IPdfGenService {
 
                         dataMap.put("paraContent","testdata");
 
-                        String pdfFileName = pdfFilePath+"/template.pdf";
+                        String pdfFileName = reportProperties.getGenDir()+"/template.pdf";
 
                         ITextRenderer textRenderer = ConcurrentPdfGenerator.newTextRenderer();
 
@@ -145,9 +162,9 @@ public class PdfGenServiceImpl implements IPdfGenService {
     public int genPdfFileByPdfTemplate(PdfQueryVO vo) throws Exception {
 
         // 模板路径
-        String templatePath = "/Users/runningcoder/git/dy-web/dy-web/target/template/template.pdf";
+        String templatePath = reportProperties.getTemplate()+"template.pdf";
         // 生成的新文件路径
-        String newPDFPath = pdfFilePath+"/1.pdf";
+        String newPDFPath = reportProperties.getGenDir()+"/1.pdf";
 
         PdfReader reader;
         FileOutputStream out;
@@ -155,7 +172,7 @@ public class PdfGenServiceImpl implements IPdfGenService {
         PdfStamper stamper;
         try {
             //字体
-            BaseFont bf = BaseFont.createFont("/Users/runningcoder/Desktop/pdf/font/STSong-Light.ttf" , BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont bf = BaseFont.createFont(reportProperties.getFont()+"simsun.ttc" , BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font FontChinese = new Font(bf, 5, Font.NORMAL);
             // 输出流
             out = new FileOutputStream(newPDFPath);
@@ -173,7 +190,7 @@ public class PdfGenServiceImpl implements IPdfGenService {
 
             //图片类的内容处理
             String key = "Test3";
-            String imgpath = "/Users/runningcoder/Desktop/pdf/1.jpg";
+            String imgpath = reportProperties.getGenDir()+"1.jpg";
             int pageNo = form.getFieldPositions(key).get(0).page;
             Rectangle signRect = form.getFieldPositions(key).get(0).position;
             float x = signRect.getLeft();
@@ -218,7 +235,7 @@ public class PdfGenServiceImpl implements IPdfGenService {
 
         ITextRenderer textRenderer = ConcurrentPdfGenerator.newTextRenderer();
 
-        String pdfPath = pdfFilePath+"/resume.pdf";
+        String pdfPath = reportProperties.getGenDir()+"resume.pdf";
 
         String htmlContent = vo.getHtmlContent();
 

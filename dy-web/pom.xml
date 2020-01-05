@@ -1,22 +1,34 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.2.RELEASE</version>
+		<relativePath/>
+	</parent>
 	<groupId>com.dy</groupId>
 	<artifactId>dy-web</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<description>基础的restful应用</description>
-    <modules>
-        <module>../dy-u-report</module>
-    </modules>
-    <packaging>pom</packaging>
+
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+
 
 	<dependencies>
 
 		<dependency>
-			<groupId>com.dy</groupId>
-			<artifactId>dy-u-file</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>com.dy</groupId>-->
+<!--			<artifactId>dy-u-file</artifactId>-->
+<!--			<version>0.0.1-SNAPSHOT</version>-->
+<!--		</dependency>-->
 
 		<dependency>
 			<groupId>com.dy</groupId>
@@ -28,17 +40,21 @@
 
 
 	<build>
-		<finalName>gzdtl-boot-common</finalName>
+		<finalName>dy-web</finalName>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-compiler-plugin</artifactId>-->
+<!--				<configuration>-->
+<!--					<source>1.8</source>-->
+<!--					<target>1.8</target>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
 
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
 
 			<!--打包jar-->
 			<plugin>
@@ -51,7 +67,7 @@
 					</excludes>
 					<archive>
 						<manifest>
-							<mainClass>com.sy.sprite.SpriteApplication</mainClass>
+							<mainClass>com.dy.StartApplication</mainClass>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
 						</manifest>
